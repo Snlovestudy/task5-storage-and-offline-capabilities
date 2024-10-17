@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Ball Game</title>
+    <style>
+        canvas {
+            border: 2px solid black;
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>Bouncing Ball Game</h2>
+
+    <!-- Canvas element for the game -->
+    <canvas id="gameCanvas" width="500" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let ballX = canvas.width / 2;
+        let ballY = canvas.height / 2;
+        let ballRadius = 20;
+        let ballSpeedX = 3;
+        let ballSpeedY = 3;
+        let ballColor = 'blue';
+
+        // Function to draw the ball
+        function drawBall() {
+            ctx.beginPath();
+            ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+            ctx.fillStyle = ballColor;
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        // Function to update the ball position and check for collisions
+        function updateBall() {
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Check for collisions with the canvas edges
+            if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
+                ballSpeedX = -ballSpeedX;
+                changeBallColor();
+            }
+            if (ballY + ballRadius > canvas.height || ballY - ballRadius < 0) {
+                ballSpeedY = -ballSpeedY;
+                changeBallColor();
+            }
+        }
+
+        // Function to change the ball's color randomly
+        function changeBallColor() {
+            const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+            ballColor = randomColor;
+        }
+
+        // Main game loop
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            drawBall();
+            updateBall();
+            requestAnimationFrame(gameLoop); // Loop the game
+        }
+
+        // Start the game
+        gameLoop();
+    </script>
+</body>
+</html>
